@@ -1,0 +1,31 @@
+Project(${Option_handler_API_LIB})
+
+CMAKE_MINIMUM_REQUIRED( VERSION 3.5 )
+
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED OFF)
+set(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost COMPONENTS REQUIRED program_options)
+
+if(Boost_FOUND)
+    FILE(GLOB CPPFILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
+    MESSAGE(STATUS ">> Files: ${CPPFILES}")
+
+    set(HEADERS
+            ${HEADERS}
+            ${CMAKE_CURRENT_SOURCE_DIR}
+            PARENT_SCOPE)
+
+    include_directories(${HEADERS})
+
+    ADD_LIBRARY( ${PROJECT_NAME} STATIC ${CPPFILES} )
+    TARGET_LINK_LIBRARIES( ${PROJECT_NAME} ${Database_API_LIB} )
+    TARGET_LINK_LIBRARIES( ${PROJECT_NAME} Boost::program_options )
+
+
+    IF(OUTPUT_DIR_FOUND)
+        SET(EXECUTABLE_OUTPUT_PATH ${OUTPUT_DIR})
+    ENDIF(OUTPUT_DIR_FOUND)
+
+    set( CMAKE_VERBOSE_MAKEFILE off )
+endif()

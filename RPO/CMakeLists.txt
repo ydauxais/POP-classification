@@ -1,0 +1,44 @@
+PROJECT("RPO")
+
+CMAKE_MINIMUM_REQUIRED( VERSION 3.5 )
+
+SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+
+set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lm" )
+set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lrt" )
+
+SET(OUTPUT_DIR_FOUND TRUE)
+SET(OUTPUT_DIR ${PROJECT_SOURCE_DIR}/bin)
+
+SET(Option_handler_API_LIB "option_handler")
+SET(CP_engine_API_LIB "CP_engine")
+SET(CP_rule_learning_API_LIB "CP_rule_learning")
+SET(Database_API_LIB "database")
+SET(Pattern_API_LIB "pattern")
+
+SET(REPERTORIES
+		${Database_API_LIB}
+		${Pattern_API_LIB}
+		${Option_handler_API_LIB}
+		${CP_rule_learning_API_LIB}
+		${CP_engine_API_LIB}
+)
+
+FOREACH(folder ${REPERTORIES})
+	ADD_SUBDIRECTORY(${folder})
+ENDFOREACH(folder)
+
+include_directories(${HEADERS} )
+
+ADD_EXECUTABLE( ${PROJECT_NAME} main.cpp ${CPPFILES} )
+TARGET_LINK_LIBRARIES( ${PROJECT_NAME} PUBLIC ${REPERTORIES} )
+
+IF(OUTPUT_DIR_FOUND)
+	SET(EXECUTABLE_OUTPUT_PATH ${OUTPUT_DIR})
+ENDIF(OUTPUT_DIR_FOUND)
+
+MESSAGE(STATUS ">> ${OUTPUT_DIR}")
+
+set( CMAKE_VERBOSE_MAKEFILE off )
