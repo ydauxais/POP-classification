@@ -123,3 +123,47 @@ Each sequence represents one of 8 different scenarios from atomic actions (pick-
 Each dataset is represented by a directory.
 In these directories, each label is represented by a separated file.
 Each line in these files represents a sequence of the form `<event_type_1> <timestamp_1> <event_type_2> <timestamp_2> ...`.
+
+## Experiments
+
+The results presented in the paper are generated using the [classification.py](/scripts/classification.py) script. 
+The usage of this script is the following:
+
+```
+usage: classification.py [-h] [--ignored_label IGNORED_LABEL] [--chronicle]
+                         [--all_closed] [--no_closed_constraint]
+                         [--min_size MINS] [--max_size MAXS] [--kfold K]
+                         [--fmin FMIN] [--gmin GMIN] [--classifier CLASSIFIER]
+                         [--out OUT]
+                         input
+```
+
+The bash script used to run classification.py for all parameter sets looks like:
+
+```
+datasets="asl-bu blocks"
+frequencies="0.6 0.5 0.4 0.3 0.2"
+growth_rates="0 1 2"
+maximal_sizes="0 4"
+output="classification.csv"
+log_output="classification.log"
+for dataset in $datasets
+do
+    for fmin in $frequencies
+    do
+        for gmin in $growth_rates
+        do 
+            for smax in $maximal_sizes
+            do
+                <custom timeout location>/timeout -t 3600 -m 12000000 python3 classification.py ../datasets/$dataset --fmin $fmin --gmin $gmin --max_size $smax --out $output --no_closed_constraint >> $log_output
+                <custom timeout location>/timeout -t 3600 -m 12000000 python3 classification.py ../datasets/$dataset --fmin $fmin --gmin $gmin --max_size $smax --out $output >> $log_output
+            done
+        done
+    done
+done
+```
+
+The custom timeout used for these experiments is available on github: [timeout](https://github.com:pshved/timeout.git). 
+The [classification_1.csv](/results/classification_1.csv) contains the results with computed in these experiments. 
+
+
