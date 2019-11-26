@@ -1,7 +1,6 @@
-# Extracting Partially Ordered Patterns under Constraints for Classification
+# Constraint-based mining of relevant partially ordered pattern for classification
 
-This repository contains the materials used for writting the paper titled "Extracting Partially Ordered Patterns under
-Constraints for Classification" and submitted to ECML/PKDD19
+This repository contains the materials used for writting the paper titled "Constraint-based mining of relevant partially ordered pattern for classification" and submitted to ECAI
 
 ## RPO Implementation
 
